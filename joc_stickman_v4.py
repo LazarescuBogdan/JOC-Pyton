@@ -115,11 +115,12 @@ while not done:
  
     # --- Game logic should go here
 
-    # --- Character not leave the screen space
+    """# --- Character not leave the screen space
     if x_coord>690: x_coord=685
     if x_coord<0: x_coord=5
     if y_coord>480: y_coord=475
     if y_coord<0: y_coord=5
+    """
 
     # ---Character speed changes
     if x_coord>x_obst1-10 and x_coord<x_obst1+20 and y_coord>y_obst1-20 and y_coord<y_obst1+15 :
@@ -141,16 +142,18 @@ while not done:
     wall_list = pygame.sprite.Group()
     wall = Wall(0, 0, 10, 500,RED)
     wall_list.add(wall)
+    wall = Wall(10,0,690,10,GREEN)
+    wall_list.add(wall)
 
 
     pygame.draw.ellipse(screen, GREEN, [x_obst1, y_obst1, 20, 20], 0)
     pygame.draw.ellipse(screen, ORANGE, [x_obst2, y_obst2, 20, 20], 0)
     draw_stick_figure(screen, x_coord, y_coord)
-    screen.blit(player_image, [x_coord,y_coord])
+    #screen.blit(player_image, [x_coord,y_coord])
     font = pygame.font.SysFont('Calibri', 25, True, False)
     text = font.render("Viteza: "+str(vit), True, BLACK)
+
     screen.blit(text, [10, 10])
-    
     wall_list.draw(screen)
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
