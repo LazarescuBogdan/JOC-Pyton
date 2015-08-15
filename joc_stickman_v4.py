@@ -7,6 +7,7 @@ WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 ORANGE=(255, 165, 0)
+wall_list = pygame.sprite.Group()
 
 class Wall(pygame.sprite.Sprite):
     """This class represents the bar at the bottom that the player controls """
@@ -112,6 +113,16 @@ while not done:
                 y_speed = 0
     x_coord = x_coord + x_speed
     y_coord = y_coord + y_speed
+    wall = Wall(x_coord, y_coord, 15, 15,RED)
+
+    block_hit_list = pygame.sprite.spritecollide(wall, wall_list, False)
+    for block in block_hit_list:
+        print("maria")
+        """if wall.rect.x > 0:
+            xcoord = block.rect.left
+        else:
+            wall.rect.left = block.rect.right"""
+        
  
     # --- Game logic should go here
 
@@ -139,7 +150,7 @@ while not done:
     # above this, or they will be erased with this command.
     screen.fill(WHITE)
     
-    wall_list = pygame.sprite.Group()
+    
     wall = Wall(0, 0, 10, 500,RED)
     wall_list.add(wall)
     wall = Wall(10,0,690,10,GREEN)
