@@ -8,6 +8,24 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 ORANGE=(255, 165, 0)
 
+class Wall(pygame.sprite.Sprite):
+    """This class represents the bar at the bottom that the player controls """
+ 
+    def __init__(self, x, y, width, height, color):
+        """ Constructor function """
+ 
+        # Call the parent's constructor
+        super().__init__()
+ 
+        # Make a BLUE wall, of the size specified in the parameters
+        self.image = pygame.Surface([width, height])
+        self.image.fill(color)
+ 
+        # Make our top-left corner the passed-in location.
+        self.rect = self.image.get_rect()
+        self.rect.y = y
+        self.rect.x = x
+
 def draw_stick_figure(screen, x, y):
     # Head
     pygame.draw.ellipse(screen, BLACK, [1 + x, y, 10, 10], 0)
@@ -119,15 +137,21 @@ while not done:
     # First, clear the screen to white. Don't put other drawing commands
     # above this, or they will be erased with this command.
     screen.fill(WHITE)
+    
+    wall_list = pygame.sprite.Group()
+    wall = Wall(0, 0, 10, 500,RED)
+    wall_list.add(wall)
+
+
     pygame.draw.ellipse(screen, GREEN, [x_obst1, y_obst1, 20, 20], 0)
     pygame.draw.ellipse(screen, ORANGE, [x_obst2, y_obst2, 20, 20], 0)
     draw_stick_figure(screen, x_coord, y_coord)
-    #screen.blit(player_image, [x_coord,y_coord])
+    screen.blit(player_image, [x_coord,y_coord])
     font = pygame.font.SysFont('Calibri', 25, True, False)
     text = font.render("Viteza: "+str(vit), True, BLACK)
     screen.blit(text, [10, 10])
     
- 
+    wall_list.draw(screen)
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
  
