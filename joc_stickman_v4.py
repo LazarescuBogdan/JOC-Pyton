@@ -27,22 +27,6 @@ class Wall(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.y = y
         self.rect.x = x
-
-"""def draw_stick_figure(screen, x, y):
-    # Head
-    pygame.draw.ellipse(screen, BLACK, [1 + x, y, 10, 10], 0)
- 
-    # Legs
-    pygame.draw.line(screen, BLACK, [5 + x, 17 + y], [10 + x, 27 + y], 2)
-    pygame.draw.line(screen, BLACK, [5 + x, 17 + y], [x, 27 + y], 2)
- 
-    # Body
-    pygame.draw.line(screen, RED, [5 + x, 17 + y], [5 + x, 7 + y],2)
- 
-    # Arms
-    pygame.draw.line(screen, RED, [5 + x, 7 + y], [9 + x, 17 + y], 2)
-    pygame.draw.line(screen, RED, [5 + x, 7 + y], [1 + x, 17 + y], 2)"""
-
 # --- Generate bonuses coord
 def generate_coord(x,y):
     
@@ -71,7 +55,7 @@ y_speed = 0
 x_coord = 350
 y_coord = 250
 # Generate player
-player=Wall(x_coord,y_coord,50,50,RED)
+player=Wall(x_coord,y_coord,50,50,BLACK)
 all_wall_list.add(player)
 
 vit=5
@@ -86,7 +70,7 @@ y_obst2=random.randint(30, 470)
 player_image = pygame.image.load("pac.png").convert()
 
 #genetare walls
-wall = Wall(120, 0, 10, 200,RED)
+wall = Wall(120, 200, 100, 200,RED)
 wall_list.add(wall)
 all_wall_list.add(wall)
 wall = Wall(10,0,69,10,GREEN)
@@ -128,19 +112,28 @@ while not done:
     y_coord = y_coord + y_speed
     player.rect.x=x_coord
     player.rect.y=y_coord
-    
-
+ 
+    print("vitezele",x_speed,y_speed)
     block_hit_list = pygame.sprite.spritecollide(player, wall_list, False)
-    print(len(block_hit_list))
     for block in block_hit_list:
-        #print("maria")
-        #print(block.rect.left)
-        # <--
-        if x_coord < block.rect.right:
-            x_coord=block.rect.right+1
-        else:
-            x_coord=block.rect.left-19
-        
+        # <--/-->
+        if x_speed !=0:
+            if x_speed < 0:
+                print("mai mare")
+                x_coord=block.rect.right+1
+            else:
+                print("mai mica")
+                x_coord=block.rect.left-51
+    block_hit_list = pygame.sprite.spritecollide(player, wall_list, False)
+    for block in block_hit_list:
+        # ^/_
+        if y_speed != 0:
+            if y_speed < 0:
+                print("de jos")
+                y_coord=block.rect.bottom+1
+            else:
+                print("de sus")
+                y_coord=block.rect.top-51
  
     # --- Game logic should go here
 
@@ -161,20 +154,16 @@ while not done:
     # First, clear the screen to white. Don't put other drawing commands
     # above this, or they will be erased with this command.
     screen.fill(WHITE)
-    
-    
-
 
     pygame.draw.ellipse(screen, GREEN, [x_obst1, y_obst1, 20, 20], 0)
     pygame.draw.ellipse(screen, ORANGE, [x_obst2, y_obst2, 20, 20], 0)
-    #draw_stick_figure(screen, x_coord, y_coord)
     #screen.blit(player_image, [x_coord,y_coord])
     font = pygame.font.SysFont('Calibri', 25, True, False)
     text = font.render("Viteza: "+str(vit), True, BLACK)
 
     screen.blit(text, [10, 10])
     all_wall_list.draw(screen)
-    print(len(all_wall_list))
+    #print(len(all_wall_list))
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
  
