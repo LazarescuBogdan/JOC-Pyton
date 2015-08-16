@@ -8,6 +8,7 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 ORANGE=(255, 165, 0)
 wall_list = pygame.sprite.Group()
+all_wall_list=pygame.sprite.Group()
 
 class Wall(pygame.sprite.Sprite):
     """This class represents the bar at the bottom that the player controls """
@@ -27,7 +28,7 @@ class Wall(pygame.sprite.Sprite):
         self.rect.y = y
         self.rect.x = x
 
-def draw_stick_figure(screen, x, y):
+"""def draw_stick_figure(screen, x, y):
     # Head
     pygame.draw.ellipse(screen, BLACK, [1 + x, y, 10, 10], 0)
  
@@ -40,7 +41,7 @@ def draw_stick_figure(screen, x, y):
  
     # Arms
     pygame.draw.line(screen, RED, [5 + x, 7 + y], [9 + x, 17 + y], 2)
-    pygame.draw.line(screen, RED, [5 + x, 7 + y], [1 + x, 17 + y], 2)
+    pygame.draw.line(screen, RED, [5 + x, 7 + y], [1 + x, 17 + y], 2)"""
 
 # --- Generate bonuses coord
 def generate_coord(x,y):
@@ -69,6 +70,9 @@ y_speed = 0
 # Current position
 x_coord = 350
 y_coord = 250
+# Generate player
+player=Wall(x_coord,y_coord,50,50,RED)
+all_wall_list.add(player)
 
 vit=5
 x_obst1=1
@@ -80,6 +84,15 @@ y_obst1=random.randint(30, 470)
 x_obst2=random.randint(30,670)
 y_obst2=random.randint(30, 470)
 player_image = pygame.image.load("pac.png").convert()
+
+#genetare walls
+wall = Wall(120, 0, 10, 200,RED)
+wall_list.add(wall)
+all_wall_list.add(wall)
+wall = Wall(10,0,69,10,GREEN)
+wall_list.add(wall)
+all_wall_list.add(wall)
+
 
 
 # -------- Main Program Loop -----------
@@ -113,25 +126,24 @@ while not done:
                 y_speed = 0
     x_coord = x_coord + x_speed
     y_coord = y_coord + y_speed
-    wall = Wall(x_coord, y_coord, 15, 15,RED)
+    player.rect.x=x_coord
+    player.rect.y=y_coord
+    
 
-    block_hit_list = pygame.sprite.spritecollide(wall, wall_list, False)
+    block_hit_list = pygame.sprite.spritecollide(player, wall_list, False)
+    print(len(block_hit_list))
     for block in block_hit_list:
-        print("maria")
-        """if wall.rect.x > 0:
-            xcoord = block.rect.left
+        #print("maria")
+        #print(block.rect.left)
+        # <--
+        if x_coord < block.rect.right:
+            x_coord=block.rect.right+1
         else:
-            wall.rect.left = block.rect.right"""
+            x_coord=block.rect.left-19
         
  
     # --- Game logic should go here
 
-    """# --- Character not leave the screen space
-    if x_coord>690: x_coord=685
-    if x_coord<0: x_coord=5
-    if y_coord>480: y_coord=475
-    if y_coord<0: y_coord=5
-    """
 
     # ---Character speed changes
     if x_coord>x_obst1-10 and x_coord<x_obst1+20 and y_coord>y_obst1-20 and y_coord<y_obst1+15 :
@@ -151,21 +163,18 @@ while not done:
     screen.fill(WHITE)
     
     
-    wall = Wall(0, 0, 10, 500,RED)
-    wall_list.add(wall)
-    wall = Wall(10,0,690,10,GREEN)
-    wall_list.add(wall)
 
 
     pygame.draw.ellipse(screen, GREEN, [x_obst1, y_obst1, 20, 20], 0)
     pygame.draw.ellipse(screen, ORANGE, [x_obst2, y_obst2, 20, 20], 0)
-    draw_stick_figure(screen, x_coord, y_coord)
+    #draw_stick_figure(screen, x_coord, y_coord)
     #screen.blit(player_image, [x_coord,y_coord])
     font = pygame.font.SysFont('Calibri', 25, True, False)
     text = font.render("Viteza: "+str(vit), True, BLACK)
 
     screen.blit(text, [10, 10])
-    wall_list.draw(screen)
+    all_wall_list.draw(screen)
+    print(len(all_wall_list))
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
  
