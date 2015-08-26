@@ -70,10 +70,14 @@ y_obst2=random.randint(30, 470)
 player_image = pygame.image.load("pac.png").convert()
 
 #genetare walls
-wall = Wall(120, 200, 100, 200,RED)
+wall = Wall(0, 0, 10, 500,RED)
 wall_list.add(wall)
 all_wall_list.add(wall)
-wall = Wall(10,0,69,10,GREEN)
+wall = Wall(10,0,690,10,GREEN)
+wall_list.add(wall)
+all_wall_list.add(wall)
+
+wall = Wall(250,250,200,200,GREEN)
 wall_list.add(wall)
 all_wall_list.add(wall)
 
@@ -124,6 +128,10 @@ while not done:
             else:
                 print("mai mica")
                 x_coord=block.rect.left-51
+            if y_speed!=0:
+                y_coord = y_coord + y_speed
+                
+                
     block_hit_list = pygame.sprite.spritecollide(player, wall_list, False)
     for block in block_hit_list:
         # ^/_
@@ -134,17 +142,19 @@ while not done:
             else:
                 print("de sus")
                 y_coord=block.rect.top-51
+            if x_speed!=0:
+                x_coord = x_coord + x_speed
  
     # --- Game logic should go here
 
 
     # ---Character speed changes
-    if x_coord>x_obst1-10 and x_coord<x_obst1+20 and y_coord>y_obst1-20 and y_coord<y_obst1+15 :
+    if x_coord>x_obst1-40 and x_coord<x_obst1+35 and y_coord>y_obst1-50 and y_coord<y_obst1+25 :
         if vit<=10: vit+=2
         x_obst1=random.randint(30,670)
         y_obst1=random.randint(30, 470)
         
-    if x_coord>x_obst2-10 and x_coord<x_obst2+20 and y_coord>y_obst2-20 and y_coord<y_obst2+15 :
+    if x_coord>x_obst2-40 and x_coord<x_obst2+35 and y_coord>y_obst2-50 and y_coord<y_obst2+25 :
         if vit>=2:vit-=2
         x_obst2=random.randint(30,670)
         y_obst2=random.randint(30, 470)
@@ -155,8 +165,8 @@ while not done:
     # above this, or they will be erased with this command.
     screen.fill(WHITE)
 
-    pygame.draw.ellipse(screen, GREEN, [x_obst1, y_obst1, 20, 20], 0)
-    pygame.draw.ellipse(screen, ORANGE, [x_obst2, y_obst2, 20, 20], 0)
+    pygame.draw.ellipse(screen, GREEN, [x_obst1, y_obst1, 35, 35], 0)
+    pygame.draw.ellipse(screen, ORANGE, [x_obst2, y_obst2, 35, 35], 0)
     #screen.blit(player_image, [x_coord,y_coord])
     font = pygame.font.SysFont('Calibri', 25, True, False)
     text = font.render("Viteza: "+str(vit), True, BLACK)
